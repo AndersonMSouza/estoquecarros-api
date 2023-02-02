@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.andersonmendes.estoquecarros.domain.model.Carro;
 
 @Repository
-public interface CarroRepository extends JpaRepository<Carro, Long>{
+public interface CarroRepository extends JpaRepository<Carro, Long> {
 
 }
