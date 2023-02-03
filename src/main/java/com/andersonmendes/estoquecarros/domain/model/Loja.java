@@ -24,7 +24,7 @@ public class Loja {
 	@Column(nullable = false)
 	private String endereco;
 	
-	@Column(nullable = false)
+	@Column(nullable = false) 
 	private String telefone;
 	
 }

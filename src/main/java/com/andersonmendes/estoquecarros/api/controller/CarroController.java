@@ -45,15 +45,15 @@ public class CarroController {
 			return ResponseEntity.ok(carro.get());
 		}
 		
-		return ResponseEntity.notFound().build();
-	
+		return ResponseEntity.notFound().build();	
 	}	
+	
 	@PostMapping
 	public ResponseEntity<?> adicionar(@RequestBody Carro carro) {
 		try {
 			carro = cadastroCarroService.salvar(carro);
 			return ResponseEntity.status(HttpStatus.CREATED).body(carro);
-		} catch (Exception e) {
+		} catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
@@ -87,8 +87,6 @@ public class CarroController {
 		
 		} catch (EntidadeEmUsoException e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
-		}
-		
-	}
-	
+		}		
+	}	
 }

@@ -1,32 +1,35 @@
 package com.andersonmendes.estoquecarros.domain.service;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
 
-@Data
-@Entity
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+import com.andersonmendes.estoquecarros.domain.exceptions.EntidadeEmUsoException;
+import com.andersonmendes.estoquecarros.domain.exceptions.EntidadeNaoEncontradaException;
+import com.andersonmendes.estoquecarros.domain.model.Loja;
+import com.andersonmendes.estoquecarros.domain.repository.LojaRepository;
+
+@Service
 public class CadastroLojaService {
 
-	@Id
-	@EqualsAndHashCode.Include
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Autowired
+	private LojaRepository lojaRepository;
 	
-	@Column(nullable = false)
-	private String nome;
+	public Loja salvar(Loja loja) {
+		return lojaRepository.save(loja);
+	}
 	
-	@Column(nullable = false)
-	private String endereco;
+	public void excluir(Long lojaId) {
+		try {
+			lojaRepository.deleteById(lojaId);
+		} catch (EmptyResultDataAccessException e) {
+			throw new EntidadeNaoEncontradaException(
+				String.format("Não existe loja cadastrada com o código %d", lojaId));
+		} catch (DataIntegrityViolationException e) {
+			throw new EntidadeEmUsoException(
+				String.format("Loja de código %d não pode ser removida, pois está em uso!", lojaId));
+		}
+	}	
 	
-	@Column(nullable = false)
-	private String cep;
-	
-	@Column(nullable = false)
-	private String telefone;
 }
