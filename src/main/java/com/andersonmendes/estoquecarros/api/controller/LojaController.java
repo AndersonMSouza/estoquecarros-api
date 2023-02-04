@@ -77,7 +77,7 @@ public class LojaController {
 	}
 	
 	@DeleteMapping("/{lojaId}")
-	public ResponseEntity<Loja> remover(@PathVariable Long lojaId) {
+	public ResponseEntity<?> remover(@PathVariable Long lojaId) {
 		try {
 			cadastroLojaService.excluir(lojaId);
 			return ResponseEntity.noContent().build();
@@ -86,7 +86,7 @@ public class LojaController {
 			return ResponseEntity.notFound().build();
 		
 		} catch (EntidadeEmUsoException e){
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();		
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());		
 		}
 		
 	}

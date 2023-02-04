@@ -53,6 +53,7 @@ public class CarroController {
 		try {
 			carro = cadastroCarroService.salvar(carro);
 			return ResponseEntity.status(HttpStatus.CREATED).body(carro);
+		
 		} catch (EntidadeNaoEncontradaException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
