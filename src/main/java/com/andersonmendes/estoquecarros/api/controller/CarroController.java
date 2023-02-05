@@ -42,7 +42,7 @@ public class CarroController {
 		Optional<Carro> carro = carroRepository.findById(carroId);
 	
 		if (carro.isPresent()) {
-			return ResponseEntity.ok(carro.get());
+			return ResponseEntity.ok(carro.get()); 
 		}
 		
 		return ResponseEntity.notFound().build();	
