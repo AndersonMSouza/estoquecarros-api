@@ -25,6 +25,6 @@ public class Pessoa {
 	private String endereco;
 	
 	@Column(nullable = false)
-	private Long telefone;
+	private String telefone;
 	
 }

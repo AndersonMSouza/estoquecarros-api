@@ -88,6 +88,5 @@ public class LojaController {
 		} catch (EntidadeEmUsoException e){
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());		
 		}
-		
 	}
 }

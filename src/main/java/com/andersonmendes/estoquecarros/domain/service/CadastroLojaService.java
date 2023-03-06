@@ -26,6 +26,7 @@ public class CadastroLojaService {
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
 				String.format("Não existe loja cadastrada com o código %d", lojaId));
+		
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
 				String.format("Loja de código %d não pode ser removida, pois está em uso!", lojaId));
