@@ -38,14 +38,8 @@ public class CarroController {
 	}
 
 	@GetMapping("/{carroId}")
-	public ResponseEntity<Carro> buscar(@PathVariable Long carroId) {
-		Optional<Carro> carro = carroRepository.findById(carroId);
-	
-		if (carro.isPresent()) {
-			return ResponseEntity.ok(carro.get()); 
-		}
-		
-		return ResponseEntity.notFound().build();	
+	public Carro buscar(@PathVariable Long carroId) {
+		return cadastroCarroService.buscarOuFalhar(carroId);
 	}	
 	
 	@PostMapping
