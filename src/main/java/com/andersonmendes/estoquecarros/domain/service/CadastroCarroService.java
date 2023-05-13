@@ -8,7 +8,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.anderson.mendes.domain.model.Pessoa;
 import com.andersonmendes.estoquecarros.domain.exceptions.EntidadeEmUsoException;
 import com.andersonmendes.estoquecarros.domain.exceptions.EntidadeNaoEncontradaException;
 import com.andersonmendes.estoquecarros.domain.model.Carro;
