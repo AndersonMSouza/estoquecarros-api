@@ -17,6 +17,12 @@ import com.andersonmendes.estoquecarros.domain.repository.LojaRepository;
 
 @Service
 public class CadastroCarroService {
+	
+	private static final String MSG_CARRO_EM_USO 
+	= "Carro de código %d não pode ser removido, pois está em uso";
+
+	private static final String MSG_CARRO_NAO_ENCONTRADO 
+	= "Não existe um cadastro de carro com código %d";
 
 	@Autowired
 	private CarroRepository carroRepository;
@@ -43,18 +49,18 @@ public class CadastroCarroService {
 			carroRepository.deleteById(carroId);
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
-				String.format("Não existe carro cadastrado com o cógigo %d", carroId));
+				String.format(MSG_CARRO_NAO_ENCONTRADO, carroId));
 		
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
-				String.format("Carro de código %d não pode removido, pois está em uso!", carroId));
+				String.format(MSG_CARRO_EM_USO, carroId));
 		}
 	}
 	
 	public Carro buscarOuFalhar(@PathVariable Long carroId) {
 		return carroRepository.findById(carroId)
 			.orElseThrow(() -> new EntidadeNaoEncontradaException(
-				String.format("Não existe carro cadastrado com o cógigo %d", carroId)));
+				String.format(MSG_CARRO_NAO_ENCONTRADO, carroId)));
 	}
 	
 }
