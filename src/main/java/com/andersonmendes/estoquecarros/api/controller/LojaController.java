@@ -38,14 +38,8 @@ public class LojaController {
 	}
 	
 	@GetMapping("/{lojaId}")
-	public ResponseEntity<Loja> buscar(@PathVariable Long lojaId) {
-		Optional<Loja> loja = lojaRepository.findById(lojaId);
-		
-		if (loja.isPresent()) {
-			return ResponseEntity.ok(loja.get());
-		}
-		
-		return ResponseEntity.notFound().build();
+	public Loja buscar(@PathVariable Long lojaId) {
+		return cadastroLojaService.buscarOuFalhar(lojaId);
 	}
 	
 	@PostMapping
