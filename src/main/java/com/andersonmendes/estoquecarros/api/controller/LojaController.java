@@ -1,7 +1,6 @@
 package com.andersonmendes.estoquecarros.api.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,21 +49,12 @@ public class LojaController {
 	}
 	
 	@PutMapping("/{lojaId}")
-	public ResponseEntity<?> atualizar(@PathVariable Long lojaId, @RequestBody Loja loja) {
-		try {
-			Optional<Loja> lojaAtual = lojaRepository.findById(lojaId);
-			
-			if (lojaAtual.isPresent()) {
-				BeanUtils.copyProperties(loja, lojaAtual.get(), "id");
-				Loja lojaSalva = cadastroLojaService.salvar(lojaAtual.get());
-				return ResponseEntity.ok(lojaSalva);
-			}
-			
-			return ResponseEntity.notFound().build();
-			
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+	public Loja atualizar(@PathVariable Long lojaId, @RequestBody Loja loja) {
+		Loja lojaAtual = cadastroLojaService.buscarOuFalhar(lojaId);
+		
+		BeanUtils.copyProperties(loja, lojaAtual, "id");
+				
+		return cadastroLojaService.salvar(lojaAtual);
 	}
 	
 	@DeleteMapping("/{lojaId}")
