@@ -1,33 +1,18 @@
 package com.andersonmendes.estoquecarros.domain.service;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@Data
-@Entity
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+import com.andersonmendes.estoquecarros.domain.model.Pessoa;
+import com.andersonmendes.estoquecarros.domain.repository.PessoaRepository;
+
+@Service
 public class CadastroPessoaService {
 
-	@Id
-	@EqualsAndHashCode.Include
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Autowired
+	private PessoaRepository pessoaRepository;
 	
-	@Column(nullable = false)
-	private String nome;
-	
-	@Column(nullable = false)
-	private String endereco;
-	
-	@Column(nullable = false)
-	private String telefone;
-	
-	@Column(nullable = false)
-	private String cep;
-	
+	public Pessoa salvar(Pessoa pessoa) {
+		return pessoaRepository.save(pessoa);
+	}
 }
