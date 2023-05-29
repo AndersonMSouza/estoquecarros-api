@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.andersonmendes.estoquecarros.domain.exceptions.EntidadeEmUsoException;
 import com.andersonmendes.estoquecarros.domain.exceptions.EntidadeNaoEncontradaException;
@@ -31,5 +32,11 @@ public class CadastroPessoaService {
 			throw new EntidadeEmUsoException(
 				String.format("Pessoa de código %d não pode ser removida, pois está em uso!", pessoaId));
 		}
+	}
+	
+	public Pessoa buscarOuFalhar(@PathVariable Long pessoaId) {
+		return pessoaRepository.findById(pessoaId)
+			.orElseThrow(() -> new EntidadeNaoEncontradaException(
+				String.format("Não existe pessoa cadastrada com o código %d", pessoaId)));
 	}
 }
