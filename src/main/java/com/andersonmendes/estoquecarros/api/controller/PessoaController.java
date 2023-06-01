@@ -1,7 +1,6 @@
 package com.andersonmendes.estoquecarros.api.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,21 +49,12 @@ public class PessoaController {
 	}
 	
 	@PutMapping("/{pessoaId}")
-	public ResponseEntity<?> atualizar(@PathVariable Long pessoaId, @RequestBody Pessoa pessoa) {
-		try {
-			Optional<Pessoa> pessoaAtual = pessoaRepository.findById(pessoaId);
+	public Pessoa atualizar(@PathVariable Long pessoaId, @RequestBody Pessoa pessoa) {
+		Pessoa pessoaAtual = cadastroPessoaService.buscarOuFalhar(pessoaId);
 		
-			if (pessoaAtual.isPresent()) {
-				BeanUtils.copyProperties(pessoa, pessoaAtual.get(), "id");
-				Pessoa pessoaSalva = pessoaRepository.save(pessoaAtual.get());
-				return ResponseEntity.ok(pessoaSalva);
-			}
-			
-			return ResponseEntity.notFound().build();
-			
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+		BeanUtils.copyProperties(pessoa, pessoaAtual, "id");
+		
+		return cadastroPessoaService.salvar(pessoaAtual);
 	}
 	
 	@DeleteMapping("/{pessoaId}")
