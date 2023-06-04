@@ -14,6 +14,13 @@ import com.andersonmendes.estoquecarros.domain.repository.LojaRepository;
 @Service
 public class CadastroLojaService {
 
+	private static final String MSG_LOJA_EM_USO 
+		= "Loja de código %d não pode ser removida, pois está em uso!";
+
+	private static final String MSG_LOJA_NAO_ENCONTRADA 
+		= "Não existe loja cadastrada com o código %d";
+	
+	
 	@Autowired
 	private LojaRepository lojaRepository;
 	
@@ -26,18 +33,18 @@ public class CadastroLojaService {
 			lojaRepository.deleteById(lojaId);
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
-				String.format("Não existe loja cadastrada com o código %d", lojaId));
+				String.format(MSG_LOJA_NAO_ENCONTRADA, lojaId));
 		
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
-				String.format("Loja de código %d não pode ser removida, pois está em uso!", lojaId));
+				String.format(MSG_LOJA_EM_USO, lojaId));
 		}
 	}
 	
 	public Loja buscarOuFalhar(@PathVariable Long lojaId) {
 		return lojaRepository.findById(lojaId)
 			.orElseThrow(() -> new EntidadeNaoEncontradaException(
-				String.format("Não existe loja cadastrada com o código %d", lojaId)));
+				String.format(MSG_LOJA_NAO_ENCONTRADA, lojaId)));
 	}
 	
 }
