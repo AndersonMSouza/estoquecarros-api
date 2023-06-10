@@ -8,6 +8,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.andersonmendes.estoquecarros.domain.exceptions.CarroNaoEncontradoException;
 import com.andersonmendes.estoquecarros.domain.exceptions.EntidadeEmUsoException;
 import com.andersonmendes.estoquecarros.domain.exceptions.EntidadeNaoEncontradaException;
 import com.andersonmendes.estoquecarros.domain.model.Carro;
@@ -19,10 +20,7 @@ import com.andersonmendes.estoquecarros.domain.repository.LojaRepository;
 public class CadastroCarroService {
 	
 	private static final String MSG_CARRO_EM_USO 
-	= "Carro de código %d não pode ser removido, pois está em uso";
-
-	private static final String MSG_CARRO_NAO_ENCONTRADO 
-	= "Não existe um cadastro de carro com código %d";
+		= "Carro de código %d não pode ser removido, pois está em uso";
 
 	@Autowired
 	private CarroRepository carroRepository;
@@ -48,8 +46,7 @@ public class CadastroCarroService {
 		try {
 			carroRepository.deleteById(carroId);
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaException(
-				String.format(MSG_CARRO_NAO_ENCONTRADO, carroId));
+			throw new CarroNaoEncontradoException(carroId);
 		
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
@@ -59,8 +56,7 @@ public class CadastroCarroService {
 	
 	public Carro buscarOuFalhar(@PathVariable Long carroId) {
 		return carroRepository.findById(carroId)
-			.orElseThrow(() -> new EntidadeNaoEncontradaException(
-				String.format(MSG_CARRO_NAO_ENCONTRADO, carroId)));
+			.orElseThrow(() -> new CarroNaoEncontradoException(carroId));
 	}
 	
 }
